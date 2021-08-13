@@ -4,7 +4,6 @@ from data import config
 from data.peewee import Miner, Courses
 from utils.set_bot_commands import set_default_commands
 import asyncio
-from change import changes
 
 async def on_startup(dp):
     import filters
