@@ -4,7 +4,7 @@ from data import config
 from data.peewee import Miner, Courses
 from utils.set_bot_commands import set_default_commands
 import asyncio
-
+from change import changes
 
 async def on_startup(dp):
     import filters
@@ -17,6 +17,17 @@ async def on_startup(dp):
     from utils.notify_admins import on_startup_notify
     await on_startup_notify(dp)
     await set_default_commands(dp)
+
+    for gamer in Miner.select():
+        bot = Bot(config.BOT_TOKEN)
+        miner = Miner.get(minerid=gamer.miner)
+        miner.balance += miner.expenses
+        miner.save()
+        await bot.send_message(chat_id=gamer.minerid, text='Бот был перезапущен из-за тех.причин\n' + changes)
+
+
+
+
 
 
 async def work():
@@ -43,7 +54,9 @@ async def pay():
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
             if miner.balance >= miner.expenses:
+                miner.work_id_expenses = True
                 miner.balance -= miner.expenses
+
                 miner.save()
             else:
                 miner.work_id_expenses = False
