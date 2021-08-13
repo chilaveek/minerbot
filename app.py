@@ -22,7 +22,7 @@ async def on_startup(dp):
         miner = Miner.get(minerid=gamer.miner)
         miner.balance += miner.expenses
         miner.save()
-        await bot.send_message(chat_id=gamer.minerid, text='Бот был перезапущен из-за тех.причин\n' + changes)
+        await bot.send_message(chat_id=gamer.minerid, text='Бот был перезапущен из-за тех.причин')
 
 
 
