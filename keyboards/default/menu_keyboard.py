@@ -8,7 +8,6 @@ menu = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton('💱Конвертировать'),
-            KeyboardButton('🧾Курс')
         ],
         [
             KeyboardButton(text='😇Создатель'),

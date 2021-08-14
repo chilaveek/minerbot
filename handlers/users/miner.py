@@ -5,56 +5,48 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQu
 from data.peewee import Miner
 from loader import dp
 
-def updatestatbtn():
+def statistic_keyboard(update, next_smile):
     buttons = [
-        InlineKeyboardButton(text='🔁', callback_data='updatestatistic')
+        InlineKeyboardButton(text='🔁', callback_data=update),
+        InlineKeyboardButton(text=next_smile, callback_data=next_smile)
     ]
-    updatebutton = InlineKeyboardMarkup(row_width=1)
+    updatebutton = InlineKeyboardMarkup(row_width=2)
     updatebutton.add(*buttons)
     return updatebutton
+
+def mining_message_await(miner):
+    text= f'Ваш отчёт по добыче:'
+    f'\nПользователь: @{miner.username}'
+    f'\n---'
+    f'\n💰Баланс:{miner.balance:.2f}$'
+    f'\n💸Затраты: {miner.expenses}$/час'
+    f'\n---'
+    f'\n⬛️Уголь: {miner.coal} шт.\n'
+    f'\n🟧Олово: {miner.tin} шт.\n'
+    f'\n⬜️Железо: {miner.iron} шт.\n'
+    f'\n⬜️Серебро: {miner.silver} шт.\n'
+    f'\n🟨Золото: {miner.aurum} шт.\n'
+    f'\n🟥Платина: {miner.platinum} шт.\n'
+    f'\n🟦Палладий: {miner.palladium} шт.\n'
+    f'\n---'
+    f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4} шт.'
+    f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4} чел.'
+    f'\n---'
+    f'\nПоделись статистикой с 👬друзьями!'
+    return text
 
 @dp.message_handler(text='⛏Добыча')
 async def mining(message: types.Message):
     miner = Miner.get(minerid=message.from_user.id)
-    await message.answer(text=f'Ваш отчёт по добыче:'
-                         f'\nПользователь: @{miner.username}'
-                         f'\n---'
-                         f'\n💰Баланс:{miner.balance}$'
-                         f'\n💸Затраты: {miner.expenses}$/час'
-                         f'\n---'
-                         f'\n⬛️Уголь: {miner.coal} шт.\n'
-                         f'\n🟧Олово: {miner.tin} шт.\n'
-                         f'\n⬜️Железо: {miner.iron} шт.\n'
-                         f'\n⬜️Серебро: {miner.silver} шт.\n'                         
-                         f'\n🟨Золото: {miner.aurum} шт.\n'
-                         f'\n🟥Платина: {miner.platinum} шт.\n'
-                         f'\n🟦Палладий: {miner.palladium} шт.\n'
-                         f'\n---'
-                         f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4} шт.'
-                         f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4} чел.'
-                         f'\n---'
-                         f'\nПоделись статистикой с 👬друзьями!',
-                         reply_markup=updatestatbtn())
+    await message.answer(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾'))
 
-@dp.callback_query_handler(text='updatestatistic')
-async def updatestatistic(call: CallbackQuery):
+@dp.callback_query_handler(text='update_statistic')
+async def update_statistic(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await call.message.edit_text(text=f'Ваш отчёт по добыче:'
-                         f'\nПользователь: @{miner.username}'
-                         f'\n---'
-                         f'\n💰Баланс:{miner.balance}$'
-                         f'\n💸Затраты: {miner.expenses}$/час'
-                         f'\n---'
-                         f'\n⬛️Уголь: {miner.coal} шт.\n'
-                         f'\n🟧Олово: {miner.tin} шт.\n'
-                         f'\n⬜️Железо: {miner.iron} шт.\n'
-                         f'\n⬜️Серебро: {miner.silver} шт.\n'                         
-                         f'\n🟨Золото: {miner.aurum} шт.\n'
-                         f'\n🟥Платина: {miner.platinum} шт.\n'
-                         f'\n🟦Палладий: {miner.palladium} шт.\n'
-                         f'\n---'
-                         f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4} шт.'
-                         f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4} чел.'
-                         f'\n---'
-                         f'\nПоделись статистикой с 👬друзьями!',
-                         reply_markup=updatestatbtn())
+    await call.message.edit_text(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾'))
+
+@dp.callback_query_handler(text='⛏')
+async def info_courses(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
+    await call.message.edit_text(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾'))
+

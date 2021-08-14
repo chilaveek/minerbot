@@ -4,6 +4,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQu
 
 from data.config import admins
 from data.peewee import Miner, Courses
+from handlers.users.miner import statistic_keyboard
 from keyboards.default.menu_keyboard import menu
 from loader import dp
 
@@ -69,24 +70,49 @@ def palladium(palladium, palladiumcourse):
     palladiumprice = palladium * palladiumcourse
     return palladiumprice
 
-@dp.message_handler(text='🧾Курс')
-async def info_course(message: types.Message):
-    miner = Miner.get(minerid=message.from_user.id)
+def percent_create(ore, default_course):
+    ans = ''
+    percent = 100 * ore / default_course - 100
+    if percent >= 0:
+        ans = '+' + str(percent.__round__(1))
+    elif percent < 0:
+        ans = str(percent.__round__(1))
+    return ans
+
+def message_courses_await(course, money):
+
+    text =  f'\n<b>🧾Стоимость сырья</b>: {money:.2f}$\n'
+    f'<b>\n📊Курс на данный момент (за 100 шт.) - </b>\n'
+    f'\n[Курс] \ [Процент по отн. к дефолтному курсу]\n'
+    f'\n⬛️Уголь - {course.coal * 100:.5f}$ \ {percent_create(course.coal, 0.001)}%\n'
+    f'\n🟧Олово - {course.tin * 100:.5f}$ \ {percent_create(course.tin, 0.005)}%\n'
+    f'\n⬜️Железо - {course.iron * 100:.5f}$ \ {percent_create(course.iron, 0.03)}%\n'
+    f'\n⬜️Серебро - {course.silver * 100:.5f}$ \ {percent_create(course.silver, 0.1)}%\n'
+    f'\n🟨Золото - {course.aurum * 100:.5f}$ \ {percent_create(course.aurum, 5.0)}%\n'
+    f'\n🟥Платина - {course.platinum * 100:.5f}$ \ {percent_create(course.platinum, 8.5)}%\n'
+    f'\n🟦Палладий - {course.palladium * 100:.5f}$ \ {percent_create(course.palladium, 18.9)}%\n'
+    return text
+
+@dp.callback_query_handler(text='🧾')
+async def info_courses(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
     course = Courses.get()
     money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
             + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
             + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
-    await message.answer(text=
-        f'\n🧾Стоимость сырья на продажу: {money:.2f}$\n'
-        f'<b>\n📊Курс на данный момент (за 100 шт.) - </b>\n'
-        f'\n⬛️Уголь - {course.coal * 100:.5f}\n'
-        f'\n🟧Олово - {course.tin * 100:.5f}\n'
-        f'\n⬜️Железо - {course.iron * 100:.5f}\n'
-        f'\n⬜️Серебро - {course.silver * 100:.5f}\n'
-        f'\n🟨Золото - {course.aurum * 100:.5f}\n'
-        f'\n🟥Платина - {course.platinum * 100:.5f}\n'
-        f'\n🟦Палладий - {course.palladium * 100:.5f}\n'
-    )
+    await call.message.edit_text(text=message_courses_await(course, money),
+                                 reply_markup=statistic_keyboard('update_course', '⛏'))
+
+@dp.callback_query_handler(text='update_course')
+async def info_courses(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
+    course = Courses.get()
+    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
+            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
+            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+
+    await call.message.edit_text(text=message_courses_await(course, money),
+                                           reply_markup=statistic_keyboard('update_course', '⛏'))
 
 
 @dp.message_handler(text='💱Конвертировать')
