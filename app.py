@@ -71,15 +71,15 @@ async def change_coorses():
 
         for course in Courses.select():
             course = Courses.get(id=1)
-            course.coal += course.coal * random.randrange(-20, 20, 1) * 0.01
-            course.tin += course.tin * random.randrange(-20, 20, 1) * 0.01
-            course.iron += course.iron * random.randrange(-20, 20, 1) * 0.01
-            course.silver += course.silver * random.randrange(-20, 20, 1) * 0.01
-            course.aurum += course.aurum * random.randrange(-20, 20, 1) * 0.01
-            course.platinum += course.platinum * random.randrange(-20, 20, 1) * 0.01
-            course.palladium += course.palladium * random.randrange(-20, 20, 1) * 0.01
+            course.coal += course.coal * random.randint(-20, 20) * 0.01
+            course.tin += course.tin * random.randint(-20, 20) * 0.01
+            course.iron += course.iron * random.randint(-20, 20) * 0.01
+            course.silver += course.silver * random.randint(-20, 20) * 0.01
+            course.aurum += course.aurum * random.randint(-20, 20) * 0.01
+            course.platinum += course.platinum * random.randint(-20, 20) * 0.01
+            course.palladium += course.palladium * random.randint(-20, 20) * 0.01
             course.save()
-        await asyncio.sleep(delay=3600)
+        await asyncio.sleep(delay=1800)
 
 async def check_work_id():
     while True:

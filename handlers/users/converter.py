@@ -78,14 +78,14 @@ async def info_course(message: types.Message):
             + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
     await message.answer(text=
         f'\n🧾Стоимость сырья на продажу: {money:.2f}$\n'
-        f'<b>📊Курс на данный момент (за 100 шт.) - </b>'
-        f'\n⬛️Уголь - {course.coal * 100:.5f}'
-        f'\n🟧Олово - {course.tin * 100:.5f}'
-        f'\n⬜️Железо - {course.iron * 100:.5f}'
-        f'\n⬜️Серебро - {course.silver * 100:.5f}'
-        f'\n🟨Золото - {course.aurum * 100:.5f}'
-        f'\n🟥Платина - {course.platinum * 100:.5f}'
-        f'\n🟦Палладий - {course.palladium * 100:.5f}'
+        f'<b>\n📊Курс на данный момент (за 100 шт.) - </b>\n'
+        f'\n⬛️Уголь - {course.coal * 100:.5f}\n'
+        f'\n🟧Олово - {course.tin * 100:.5f}\n'
+        f'\n⬜️Железо - {course.iron * 100:.5f}\n'
+        f'\n⬜️Серебро - {course.silver * 100:.5f}\n'
+        f'\n🟨Золото - {course.aurum * 100:.5f}\n'
+        f'\n🟥Платина - {course.platinum * 100:.5f}\n'
+        f'\n🟦Палладий - {course.palladium * 100:.5f}\n'
     )
 
 
@@ -100,14 +100,14 @@ async def converter(message: types.Message):
             + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
     await message.answer(text=f'Вас приветствует биржа руд и ценных бумаг.\nРабота в шахтах <b>приостановлена</b>.'
                               f'\n🧾Стоимость сырья на продажу: {money:.2f}$\n'
-                              f'<b>📊Из них - </b>'
-                              f'\n⬛️Уголь - {coal(miner.coal, course.coal)}'
-                              f'\n🟧Олово - {tin(miner.tin, course.tin)}'
-                              f'\n⬜️Железо - {iron(miner.iron, course.iron)}'
-                              f'\n⬜️Серебро - {silver(miner.silver, course.silver)}'
-                              f'\n🟨Золото - {aurum(miner.aurum, course.aurum)}'
-                              f'\n🟥Платина - {platinum(miner.platinum, course.platinum)}'
-                              f'\n🟦Палладий - {palladium(miner.palladium, course.palladium)}',
+                              f'<b>\n📊Из них - </b>\n'
+                              f'\n⬛️Уголь - {coal(miner.coal, course.coal)}\n'
+                              f'\n🟧Олово - {tin(miner.tin, course.tin)}\n'
+                              f'\n⬜️Железо - {iron(miner.iron, course.iron)}\n'
+                              f'\n⬜️Серебро - {silver(miner.silver, course.silver)}\n'
+                              f'\n🟨Золото - {aurum(miner.aurum, course.aurum)}\n'
+                              f'\n🟥Платина - {platinum(miner.platinum, course.platinum)}\n'
+                              f'\n🟦Палладий - {palladium(miner.palladium, course.palladium)}\n',
                          reply_markup=sellkeyboard(message.from_user.id))
 
 
