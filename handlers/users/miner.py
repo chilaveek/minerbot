@@ -15,23 +15,23 @@ def statistic_keyboard(update, next_smile):
     return updatebutton
 
 def mining_message_await(miner):
-    text= f'Ваш отчёт по добыче:'
-    f'\nПользователь: @{miner.username}'
-    f'\n---'
-    f'\n💰Баланс:{miner.balance:.2f}$'
-    f'\n💸Затраты: {miner.expenses}$/час'
-    f'\n---'
-    f'\n⬛️Уголь: {miner.coal} шт.\n'
-    f'\n🟧Олово: {miner.tin} шт.\n'
-    f'\n⬜️Железо: {miner.iron} шт.\n'
-    f'\n⬜️Серебро: {miner.silver} шт.\n'
-    f'\n🟨Золото: {miner.aurum} шт.\n'
-    f'\n🟥Платина: {miner.platinum} шт.\n'
-    f'\n🟦Палладий: {miner.palladium} шт.\n'
-    f'\n---'
-    f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4} шт.'
-    f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4} чел.'
-    f'\n---'
+    text= f'Ваш отчёт по добыче:' \
+    f'\nПользователь: @{miner.username}' \
+    f'\n---' \
+    f'\n💰Баланс:{miner.balance:.2f}$' \
+    f'\n💸Затраты: {miner.expenses}$/час' \
+    f'\n---' \
+    f'\n⬛️Уголь: {miner.coal} шт.\n' \
+    f'\n🟧Олово: {miner.tin} шт.\n' \
+    f'\n⬜️Железо: {miner.iron} шт.\n' \
+    f'\n⬜️Серебро: {miner.silver} шт.\n' \
+    f'\n🟨Золото: {miner.aurum} шт.\n' \
+    f'\n🟥Платина: {miner.platinum} шт.\n' \
+    f'\n🟦Палладий: {miner.palladium} шт.\n' \
+    f'\n---' \
+    f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4} шт.' \
+    f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4} чел.' \
+    f'\n---' \
     f'\nПоделись статистикой с 👬друзьями!'
     return text
 

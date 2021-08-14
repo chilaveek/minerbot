@@ -81,15 +81,15 @@ def percent_create(ore, default_course):
 
 def message_courses_await(course, money):
 
-    text =  f'\n<b>🧾Стоимость сырья</b>: {money:.2f}$\n'
-    f'<b>\n📊Курс на данный момент (за 100 шт.) - </b>\n'
-    f'\n[Курс] \ [Процент по отн. к дефолтному курсу]\n'
-    f'\n⬛️Уголь - {course.coal * 100:.5f}$ \ {percent_create(course.coal, 0.001)}%\n'
-    f'\n🟧Олово - {course.tin * 100:.5f}$ \ {percent_create(course.tin, 0.005)}%\n'
-    f'\n⬜️Железо - {course.iron * 100:.5f}$ \ {percent_create(course.iron, 0.03)}%\n'
-    f'\n⬜️Серебро - {course.silver * 100:.5f}$ \ {percent_create(course.silver, 0.1)}%\n'
-    f'\n🟨Золото - {course.aurum * 100:.5f}$ \ {percent_create(course.aurum, 5.0)}%\n'
-    f'\n🟥Платина - {course.platinum * 100:.5f}$ \ {percent_create(course.platinum, 8.5)}%\n'
+    text =  f'\n<b>🧾Стоимость сырья</b>: {money:.2f}$\n' \
+    f'<b>\n📊Курс на данный момент (за 100 шт.) - </b>\n' \
+    f'\n[Курс] \ [Процент по отн. к дефолтному курсу]\n' \
+    f'\n⬛️Уголь - {course.coal * 100:.5f}$ \ {percent_create(course.coal, 0.001)}%\n' \
+    f'\n🟧Олово - {course.tin * 100:.5f}$ \ {percent_create(course.tin, 0.005)}%\n' \
+    f'\n⬜️Железо - {course.iron * 100:.5f}$ \ {percent_create(course.iron, 0.03)}%\n' \
+    f'\n⬜️Серебро - {course.silver * 100:.5f}$ \ {percent_create(course.silver, 0.1)}%\n' \
+    f'\n🟨Золото - {course.aurum * 100:.5f}$ \ {percent_create(course.aurum, 5.0)}%\n' \
+    f'\n🟥Платина - {course.platinum * 100:.5f}$ \ {percent_create(course.platinum, 8.5)}%\n' \
     f'\n🟦Палладий - {course.palladium * 100:.5f}$ \ {percent_create(course.palladium, 18.9)}%\n'
     return text
 
