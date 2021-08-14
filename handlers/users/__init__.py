@@ -5,6 +5,7 @@ from .miner import dp
 from .shop import dp
 from .menu import dp
 from .converter import dp
+from .contracts import dp
 from .echo import dp
 
 

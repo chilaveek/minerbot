@@ -71,16 +71,28 @@ async def change_coorses():
 
         for course in Courses.select():
             course = Courses.get(id=1)
-            course.coal += course.coal * random.randrange(-5, 5, 1) * 0.1
-            course.tin += course.tin * random.randrange(-5, 5, 1) * 0.1
-            course.iron += course.iron * random.randrange(-5, 5, 1) * 0.1
-            course.silver += course.silver * random.randrange(-5, 5, 1) * 0.1
-            course.aurum += course.aurum * random.randrange(-5, 5, 1) * 0.1
-            course.platinum += course.platinum * random.randrange(-5, 5, 1) * 0.1
-            course.palladium += course.palladium * random.randrange(-5, 5, 1) * 0.1
+            course.coal += course.coal * random.randrange(-20, 20, 1) * 0.01
+            course.tin += course.tin * random.randrange(-20, 20, 1) * 0.01
+            course.iron += course.iron * random.randrange(-20, 20, 1) * 0.01
+            course.silver += course.silver * random.randrange(-20, 20, 1) * 0.01
+            course.aurum += course.aurum * random.randrange(-20, 20, 1) * 0.01
+            course.platinum += course.platinum * random.randrange(-20, 20, 1) * 0.01
+            course.palladium += course.palladium * random.randrange(-20, 20, 1) * 0.01
             course.save()
         await asyncio.sleep(delay=3600)
 
+async def check_work_id():
+    while True:
+        for gamer in Miner.select():
+            miner = Miner.get(minerid=gamer.minerid)
+            if miner.balance >= miner.expenses:
+                miner.work_id_expenses = True
+                miner.save()
+            elif miner.balance < miner.expenses:
+                miner.work_id_expenses = False
+                miner.save()
+
+        await asyncio.sleep(5)
 
 if __name__ == '__main__':
     from aiogram import executor, Bot
@@ -89,8 +101,11 @@ if __name__ == '__main__':
     loop1 = asyncio.get_event_loop()
     loop2 = asyncio.get_event_loop()
     loop3 = asyncio.get_event_loop()
+    loop4 = asyncio.get_event_loop()
+
     loop1.create_task(work())
     loop2.create_task(pay())
     loop3.create_task(change_coorses())
+    loop4.create_task(check_work_id())
 
     executor.start_polling(dp, on_startup=on_startup)
