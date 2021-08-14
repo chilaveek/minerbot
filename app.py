@@ -64,20 +64,51 @@ async def pay():
                     text='Шахтёры взбунтовались! Нескольким не пришла ЗП, все устроили забастовку. Срочно вернитесь!')
         await asyncio.sleep(delay=3600)
 
+def check_course(course, default_price):
+    changer = 0
+    if course < default_price:
+        if course <= 0.6 * default_price:
+            changer = course * random.randint(-3, 35) * 0.01
+        elif course <= 0.7 * default_price:
+            changer = course * random.randint(-5, 25) * 0.01
+        elif course <= 0.8 * default_price:
+            changer = course * random.randint(-10, 20) * 0.01
+        elif course <= 0.9 * default_price:
+            changer = course * random.randint(-17, 20) * 0.01
+        elif course <= 0.99 * default_price:
+            changer = course * random.randint(-19, 20) * 0.01
 
-async def change_coorses():
+    elif course == default_price:
+        changer = course * random.randint(-30, 30) * 0.01
+
+    elif course > default_price:
+        if course >= 1.4 * default_price:
+            changer = course * random.randint(-30, 3) * 0.01
+        elif course >= 1.3 * default_price:
+            changer = course * random.randint(-20, 10) * 0.01
+        elif course >= 1.2 * default_price:
+            changer = course * random.randint(-20, 14) * 0.01
+        elif course >= 1.1 * default_price:
+            changer = course * random.randint(-20, 17) * 0.01
+        elif course >= 1.01 * default_price:
+            changer = course * random.randint(-20, 19) * 0.01
+    return changer
+
+
+
+async def change_courses():
     while True:
         bot = Bot(config.BOT_TOKEN)
 
         for course in Courses.select():
             course = Courses.get(id=1)
-            course.coal += course.coal * random.randint(-20, 20) * 0.01
-            course.tin += course.tin * random.randint(-20, 20) * 0.01
-            course.iron += course.iron * random.randint(-20, 20) * 0.01
-            course.silver += course.silver * random.randint(-20, 20) * 0.01
-            course.aurum += course.aurum * random.randint(-20, 20) * 0.01
-            course.platinum += course.platinum * random.randint(-20, 20) * 0.01
-            course.palladium += course.palladium * random.randint(-20, 20) * 0.01
+            course.coal += check_course(course.coal, 0.001)
+            course.tin += check_course(course.tin, 0.005)
+            course.iron += check_course(course.iron, 0.03)
+            course.silver += check_course(course.silver, 0.1)
+            course.aurum += check_course(course.aurum, 5.0)
+            course.platinum += check_course(course.platinum, 8.5)
+            course.palladium += check_course(course.palladium, 18.9)
             course.save()
         await asyncio.sleep(delay=1800)
 
@@ -105,7 +136,7 @@ if __name__ == '__main__':
 
     loop1.create_task(work())
     loop2.create_task(pay())
-    loop3.create_task(change_coorses())
+    loop3.create_task(change_courses())
     loop4.create_task(check_work_id())
 
     executor.start_polling(dp, on_startup=on_startup)

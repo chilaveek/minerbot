@@ -40,8 +40,8 @@ def get2_assort():
 def get_keyboard(cb_data, cb_back, cb_forward):
     buttons = [
         types.InlineKeyboardButton(text='⬅️', callback_data=cb_back),
-        types.InlineKeyboardButton(text="💳Купить", callback_data=cb_data),
-        types.InlineKeyboardButton(text="🙅‍♂️Отмена", callback_data='cancel'),
+        types.InlineKeyboardButton(text="💳", callback_data=cb_data),
+        types.InlineKeyboardButton(text="🙅‍♂️", callback_data='cancel'),
         types.InlineKeyboardButton(text='➡️', callback_data=cb_forward),
     ]
     keyboard = InlineKeyboardMarkup(row_width=4)
