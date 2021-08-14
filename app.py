@@ -22,7 +22,6 @@ async def on_startup(dp):
         miner = Miner.get(minerid=gamer.minerid)
         miner.balance += miner.expenses
         miner.save()
-        await bot.send_message(chat_id=gamer.minerid, text='Бот был перезапущен из-за тех.причин')
 
 
 
@@ -52,6 +51,7 @@ async def pay():
         bot = Bot(config.BOT_TOKEN)
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
+            miner.balance += 40
             if miner.balance >= miner.expenses:
                 miner.work_id_expenses = True
                 miner.balance -= miner.expenses
@@ -61,7 +61,7 @@ async def pay():
                 miner.work_id_expenses = False
                 miner.save()
                 await bot.send_message(chat_id=miner.minerid,
-                    text='Шахтёры взбунтовались! Нескольким не пришла ЗП, все устроили забастовку. Срочно вернитесь!')
+                    text='Шахтёры взбунтовались! Нескольким не пришла ЗП, все устроили забастовку на час. Срочно вернитесь!')
         await asyncio.sleep(delay=3600)
 
 def check_course(course, default_price):
@@ -123,7 +123,7 @@ async def check_work_id():
                 miner.work_id_expenses = False
                 miner.save()
 
-        await asyncio.sleep(5)
+        await asyncio.sleep(100)
 
 if __name__ == '__main__':
     from aiogram import executor, Bot
