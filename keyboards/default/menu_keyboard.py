@@ -6,7 +6,10 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text='⛏Добыча'),
             KeyboardButton(text='🛒Магазин'),
         ],
-        [KeyboardButton('💱Конвертировать')],
+        [
+            KeyboardButton('💱Конвертировать'),
+            KeyboardButton('🧾Курс')
+        ],
         [
             KeyboardButton(text='😇Создатель'),
             KeyboardButton(text='💳Донат&Вывод'),
