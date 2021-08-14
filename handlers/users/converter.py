@@ -69,7 +69,7 @@ def palladium(palladium, palladiumcourse):
     palladiumprice = palladium * palladiumcourse
     return palladiumprice
 
-@dp.message_handler('🧾Курс')
+@dp.message_handler(text='🧾Курс')
 async def info_course(message: types.Message):
     miner = Miner.get(minerid=message.from_user.id)
     course = Courses.get()
