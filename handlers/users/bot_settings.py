@@ -60,7 +60,7 @@ async def notify(call: CallbackQuery):
     elif miner.notify_balance is True:
         miner.notify_balance = False
         miner.save()
-    return call.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+    return call.message.edit_text(text='Изменения баланса приняты. Нажмите на кнопку, чтобы настроить уведомления',
                            reply_markup=notifications(miner.minerid))
 
 
@@ -73,7 +73,7 @@ async def notify(call: CallbackQuery):
     elif miner.notify_courses is True:
         miner.notify_courses = False
         miner.save()
-    return call.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+    return call.message.edit_text(text='Изменения курса приняты. Нажмите на кнопку, чтобы настроить уведомления',
                            reply_markup=notifications(miner.minerid))
 
 
@@ -86,7 +86,7 @@ async def notify(call: CallbackQuery):
     elif miner.notify_reset is True:
         miner.notify_reset = False
         miner.save()
-    return call.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+    return call.message.edit_text(text='Изменения перезапуска приняты. Нажмите на кнопку, чтобы настроить уведомления',
                            reply_markup=notifications(miner.minerid))
 
 
