@@ -21,7 +21,7 @@ async def on_startup(dp):
     for gamer in Miner.select():
         bot = Bot(config.BOT_TOKEN)
         miner = Miner.get(minerid=gamer.minerid)
-        miner.balance += miner.expenses
+        miner.balance += miner.expenses/60
         miner.save()
 
 
@@ -49,16 +49,13 @@ async def pay():
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
             if miner.balance >= miner.expenses:
-                miner.work_id_expenses = True
-                miner.balance -= miner.expenses
-
+                miner.balance -= miner.expenses/60
                 miner.save()
             else:
                 miner.work_id_expenses = False
                 miner.save()
-                await bot.send_message(chat_id=miner.minerid,
-                                       text='Шахтёры взбунтовались! Нескольким не пришла ЗП, все устроили забастовку на час. Срочно вернитесь!')
-        await asyncio.sleep(delay=3600)
+
+        await asyncio.sleep(delay=60)
 
 
 def check_course(course, default_price):
@@ -112,15 +109,18 @@ async def change_courses():
 async def check_work_id():
     while True:
         for gamer in Miner.select():
+            bot = Bot(config.BOT_TOKEN)
             miner = Miner.get(minerid=gamer.minerid)
             if miner.balance >= miner.expenses:
                 miner.work_id_expenses = True
                 miner.save()
             elif miner.balance < miner.expenses:
                 miner.work_id_expenses = False
+                await bot.send_message(chat_id=gamer.minerid, text='Шахтёры взбунтовались! Срочно продайте свои '
+                                                                   'поставки ресурсов, чтобы продолжить работу')
                 miner.save()
 
-        await asyncio.sleep(100)
+        await asyncio.sleep(3600)
 
 
 if __name__ == '__main__':
