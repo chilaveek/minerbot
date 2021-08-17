@@ -168,3 +168,17 @@ async def reset(message: types.Message):
         course.coal, course.tin, course.iron, course.silver, course.aurum, course.platinum, course.palladium = 0.001, 0.005, 0.03, 0.1, 5.0, 8.5, 18.9
         course.save()
         await message.reply(text='Курс валюты сброшен до значения default')
+
+@dp.callback_query_handler(text='fast_sell')
+async def fast_sell(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
+            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
+            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+    miner.balance += money
+    miner.coal, miner.tin, miner.iron, miner.silver, miner.aurum, miner.platinum, miner.palladium = 0, 0, 0, 0, 0, 0, 0
+    miner.work_id_converter = True
+    miner.save()
+    await call.message.edit_text(text=message_courses_await(course, money),
+                                 reply_markup=statistic_keyboard('update_course', '⛏'))

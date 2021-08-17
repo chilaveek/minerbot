@@ -42,6 +42,18 @@ def notifications(minerid):
     keyboard.add(*buttons)
     return keyboard
 
+def other_settings(minerid):
+    miner = Miner.get(minerid=minerid)
+    fast_sell_text = 'Быстрая продажа'
+
+    if miner.fast_sell is True:
+        fast_sell_text += '✅'
+    elif miner.fast_sell is False:
+        fast_sell_text += '❌'
+
+    buttons = [
+        InlineKeyboardButton(text=fast_sell_text, callback_data='fast_sell_activate')
+    ]
 
 @dp.message_handler(text='⚙️Настройки')
 async def settings(message: types.Message):
@@ -90,5 +102,21 @@ async def notify(call: CallbackQuery):
     await call.message.edit_text(text='Изменения перезапуска приняты. Нажмите на кнопку, чтобы настроить уведомления',
                            reply_markup=notifications(miner.minerid))
 
+@dp.callback_query_handler(text='🤖')
+async def notify(call: CallbackQuery):
+    await call.message.edit_text(text='Нажмите на кнопку, чтобы применить настройку: ',
+                                 reply_markup=other_settings(call.from_user.id))
 
 
+@dp.callback_query_handler(text='fast_sell_activate')
+async def activate(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
+    if miner.fast_sell is False:
+        miner.fast_sell = True
+        miner.save()
+    elif miner.fast_sell is True:
+        miner.fast_sell = False
+        miner.save()
+    await call.message.edit_text(text='Кнопка <b>Быстрая продажа</b> добавлена в раздел <b>⛏Добыча</b>. '
+                                      'Нажмите на кнопку, чтобы применить настройку:',
+                                 reply_markup=other_settings(call.from_user.id))

@@ -5,13 +5,22 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQu
 from data.peewee import Miner
 from loader import dp
 
-def statistic_keyboard(update, next_smile):
+def statistic_keyboard(update, next_smile, fast_sell):
     buttons = [
         InlineKeyboardButton(text='🔁', callback_data=update),
         InlineKeyboardButton(text=next_smile, callback_data=next_smile)
     ]
+
+
     updatebutton = InlineKeyboardMarkup(row_width=2)
     updatebutton.add(*buttons)
+    if fast_sell is True:
+
+        button = [
+            InlineKeyboardButton(text='Быстрая продажа', callback_data='fast_sell')
+        ]
+
+        updatebutton.add(*button)
     return updatebutton
 
 def mining_message_await(miner):
