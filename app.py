@@ -5,6 +5,7 @@ from data.peewee import Miner, Courses
 from utils.set_bot_commands import set_default_commands
 import asyncio
 
+
 async def on_startup(dp):
     import filters
     import middlewares
@@ -22,10 +23,6 @@ async def on_startup(dp):
         miner = Miner.get(minerid=gamer.minerid)
         miner.balance += miner.expenses
         miner.save()
-
-
-
-
 
 
 async def work():
@@ -51,7 +48,6 @@ async def pay():
         bot = Bot(config.BOT_TOKEN)
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
-            miner.balance += 40
             if miner.balance >= miner.expenses:
                 miner.work_id_expenses = True
                 miner.balance -= miner.expenses
@@ -61,8 +57,9 @@ async def pay():
                 miner.work_id_expenses = False
                 miner.save()
                 await bot.send_message(chat_id=miner.minerid,
-                    text='Шахтёры взбунтовались! Нескольким не пришла ЗП, все устроили забастовку на час. Срочно вернитесь!')
+                                       text='Шахтёры взбунтовались! Нескольким не пришла ЗП, все устроили забастовку на час. Срочно вернитесь!')
         await asyncio.sleep(delay=3600)
+
 
 def check_course(course, default_price):
     changer = 0
@@ -76,7 +73,7 @@ def check_course(course, default_price):
         elif course <= 0.9 * default_price:
             changer = course * random.randint(-17, 20) * 0.01
         elif course <= 0.99 * default_price:
-            changer = course * random.randint(-19, 20) * 0.01
+            changer = course * random.randint(-30, 30) * 0.01
 
     elif course == default_price:
         changer = course * random.randint(-30, 30) * 0.01
@@ -91,9 +88,8 @@ def check_course(course, default_price):
         elif course >= 1.1 * default_price:
             changer = course * random.randint(-20, 17) * 0.01
         elif course >= 1.01 * default_price:
-            changer = course * random.randint(-20, 19) * 0.01
+            changer = course * random.randint(-30, 30) * 0.01
     return changer
-
 
 
 async def change_courses():
@@ -112,6 +108,7 @@ async def change_courses():
             course.save()
         await asyncio.sleep(delay=1800)
 
+
 async def check_work_id():
     while True:
         for gamer in Miner.select():
@@ -125,18 +122,16 @@ async def check_work_id():
 
         await asyncio.sleep(100)
 
+
 if __name__ == '__main__':
     from aiogram import executor, Bot
     from handlers import dp
 
-    loop1 = asyncio.get_event_loop()
-    loop2 = asyncio.get_event_loop()
-    loop3 = asyncio.get_event_loop()
-    loop4 = asyncio.get_event_loop()
+    loop = asyncio.get_event_loop()
 
-    loop1.create_task(work())
-    loop2.create_task(pay())
-    loop3.create_task(change_courses())
-    loop4.create_task(check_work_id())
+    loop.create_task(work())
+    loop.create_task(pay())
+    loop.create_task(change_courses())
+    loop.create_task(check_work_id())
 
     executor.start_polling(dp, on_startup=on_startup)
