@@ -49,6 +49,7 @@ async def pay():
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
             if miner.balance >= miner.expenses:
+                miner.work_id_expenses = True
                 miner.balance -= miner.expenses/60
                 miner.save()
             else:
