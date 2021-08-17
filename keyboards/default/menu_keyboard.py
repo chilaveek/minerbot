@@ -8,10 +8,11 @@ menu = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton('💱Конвертировать'),
+            KeyboardButton(text='😇Создатель'),
         ],
         [
-            KeyboardButton(text='😇Создатель'),
             KeyboardButton(text='💳Донат&Вывод'),
+            KeyboardButton(text='⚙️Настройки')
         ],
     ],
 

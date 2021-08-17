@@ -37,7 +37,9 @@ class Miner(Model):
     palladium = IntegerField(default=0)
     balance = FloatField(default=100.0)
     expenses = IntegerField(default=50)
-
+    notify_balance = BooleanField(default=True)
+    notify_courses = BooleanField(default=False)
+    notify_reset = BooleanField(default=False)
     class Meta:
         database = db
 
