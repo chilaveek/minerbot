@@ -56,7 +56,7 @@ async def settings(message: types.Message):
 
 @dp.callback_query_handler(text='🔊')
 async def notify(call: CallbackQuery):
-    miner = Miner.get(minerid=call.message.from_user.id)
+    miner = Miner.get(minerid=call.from_user.id)
     await call.message.edit_text(text='Нажмите на кнопку, чтобы настроить уведомления: ', reply_markup=notifications(miner.minerid))
 
 @dp.callback_query_handler(text='balance_end_notify')
