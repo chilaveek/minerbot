@@ -37,7 +37,7 @@ def notifications(minerid):
         InlineKeyboardButton(text=notify_courses, callback_data='change_courses_notify'),
         InlineKeyboardButton(text=notify_reset, callback_data='reset_bot_notify'),
     ]
-    keyboard = InlineKeyboardMarkup(row_width=3)
+    keyboard = InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
     return keyboard
 
