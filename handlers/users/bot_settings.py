@@ -15,6 +15,7 @@ def settings_kb():
 
 def notifications(minerid):
     miner = Miner.get(minerid=minerid)
+
     notify_balance = 'О бунтах и забастовках'
     notify_courses = 'О смене курса'
     notify_reset = 'О перезапуске бота'
@@ -41,14 +42,15 @@ def notifications(minerid):
     keyboard.add(*buttons)
     return keyboard
 
-def settings_script(miner_setting, minerid, call):
+def settings_script(miner_setting, minerid, callmessage):
     miner = Miner.get(minerid=minerid)
     if miner_setting is False:
         miner_setting = True
+        miner.save()
     elif miner_setting is True:
         miner_setting = False
-    miner.save()
-    return call.message.edit_text(chat_id=minerid, text='Нажмите на кнопку, чтобы настроить уведомления:',
+        miner.save()
+    return callmessage.message.edit_text(chat_id=minerid, text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
                            reply_markup=notifications(minerid))
 
 @dp.message_handler(text='⚙️Настройки')
@@ -63,17 +65,17 @@ async def notify(call: CallbackQuery):
 @dp.callback_query_handler(text='balance_end_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await settings_script(miner.notify_balance, miner.minerid, call)
+    await settings_script(miner.notify_balance, call.from_user.id, call)
 
 @dp.callback_query_handler(text='change_courses_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await settings_script(miner.notify_courses, miner.minerid, call)
+    await settings_script(miner.notify_courses, call.from_user.id, call)
 
 @dp.callback_query_handler(text='reset_bot_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await settings_script(miner.notify_reset, miner.minerid, call)
+    await settings_script(miner.notify_reset, call.from_user.id, call)
 
 
 
