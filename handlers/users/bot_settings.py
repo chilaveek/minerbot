@@ -54,6 +54,10 @@ def other_settings(minerid):
     buttons = [
         InlineKeyboardButton(text=fast_sell_text, callback_data='fast_sell_activate')
     ]
+    keyboard = InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+    return keyboard
+
 
 @dp.message_handler(text='⚙️Настройки')
 async def settings(message: types.Message):
