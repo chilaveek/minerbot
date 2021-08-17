@@ -40,6 +40,7 @@ class Miner(Model):
     notify_balance = BooleanField(default=True)
     notify_courses = BooleanField(default=False)
     notify_reset = BooleanField(default=False)
+    fast_sell = BooleanField(default=False)
     class Meta:
         database = db
 
