@@ -50,7 +50,7 @@ def settings_script(miner_setting, minerid, callmessage):
     elif miner_setting is True:
         miner_setting = False
         miner.save()
-    return callmessage.message.edit_text(chat_id=minerid, text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+    return callmessage.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
                            reply_markup=notifications(minerid))
 
 @dp.message_handler(text='⚙️Настройки')
