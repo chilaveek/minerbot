@@ -101,7 +101,7 @@ async def info_courses(call: CallbackQuery):
             + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
             + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
     await call.message.edit_text(text=message_courses_await(course, money),
-                                 reply_markup=statistic_keyboard('update_course', '⛏'))
+                                 reply_markup=statistic_keyboard('update_course', '⛏', miner.fast_sell))
 
 @dp.callback_query_handler(text='update_course')
 async def info_courses(call: CallbackQuery):
@@ -181,4 +181,4 @@ async def fast_sell(call: CallbackQuery):
     miner.work_id_converter = True
     miner.save()
     await call.message.edit_text(text=message_courses_await(course, money),
-                                 reply_markup=statistic_keyboard('update_course', '⛏'))
+                                 reply_markup=statistic_keyboard('update_course', '⛏', miner.fast_sell))

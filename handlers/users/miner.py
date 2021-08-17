@@ -47,15 +47,15 @@ def mining_message_await(miner):
 @dp.message_handler(text='⛏Добыча')
 async def mining(message: types.Message):
     miner = Miner.get(minerid=message.from_user.id)
-    await message.answer(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾'))
+    await message.answer(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾', miner.fast_sell))
 
 @dp.callback_query_handler(text='update_statistic')
 async def update_statistic(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await call.message.edit_text(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾'))
+    await call.message.edit_text(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾', miner.fast_sell))
 
 @dp.callback_query_handler(text='⛏')
 async def info_courses(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await call.message.edit_text(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾'))
+    await call.message.edit_text(text=mining_message_await(miner), reply_markup=statistic_keyboard('update_statistic', '🧾', miner.fast_sell))
 
