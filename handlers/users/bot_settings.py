@@ -61,17 +61,17 @@ async def notify(call: CallbackQuery):
 
 @dp.callback_query_handler(text='balance_end_notify')
 async def notify(call: CallbackQuery):
-    miner = Miner.get(minerid=call.message.from_user.id)
+    miner = Miner.get(minerid=call.from_user.id)
     settings_script(miner.notify_balance, miner.minerid, call)
 
 @dp.callback_query_handler(text='change_courses_notify')
 async def notify(call: CallbackQuery):
-    miner = Miner.get(minerid=call.message.from_user.id)
+    miner = Miner.get(minerid=call.from_user.id)
     settings_script(miner.notify_courses, miner.minerid, call)
 
 @dp.callback_query_handler(text='reset_bot_notify')
 async def notify(call: CallbackQuery):
-    miner = Miner.get(minerid=call.message.from_user.id)
+    miner = Miner.get(minerid=call.from_user.id)
     settings_script(miner.notify_reset, miner.minerid, call)
 
 
