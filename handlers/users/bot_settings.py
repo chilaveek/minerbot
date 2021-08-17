@@ -42,17 +42,6 @@ def notifications(minerid):
     keyboard.add(*buttons)
     return keyboard
 
-def settings_script(miner_setting, minerid, callmessage):
-    miner = Miner.get(minerid=minerid)
-    if miner_setting is False:
-        miner_setting = True
-        miner.save()
-    elif miner_setting is True:
-        miner_setting = False
-        miner.save()
-    return callmessage.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
-                           reply_markup=notifications(minerid))
-
 @dp.message_handler(text='⚙️Настройки')
 async def settings(message: types.Message):
     await message.answer(text='⚙️Открываем настройки...', reply_markup=settings_kb())
@@ -65,12 +54,28 @@ async def notify(call: CallbackQuery):
 @dp.callback_query_handler(text='balance_end_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await settings_script(miner.notify_balance, call.from_user.id, call)
+    if miner.notify_balance is False:
+        miner.notify_balance = True
+        miner.save()
+    elif miner.notify_balance is True:
+        miner.notify_balance = False
+        miner.save()
+    return call.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+                           reply_markup=notifications(miner.minerid))
+
 
 @dp.callback_query_handler(text='change_courses_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await settings_script(miner.notify_courses, call.from_user.id, call)
+    if miner.notify_courses is False:
+        miner.notify_courses = True
+        miner.save()
+    elif miner.notify_courses is True:
+        miner.notify_courses = False
+        miner.save()
+    return call.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+                           reply_markup=notifications(miner.minerid))
+
 
 @dp.callback_query_handler(text='reset_bot_notify')
 async def notify(call: CallbackQuery):
