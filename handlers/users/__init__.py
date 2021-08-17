@@ -6,6 +6,7 @@ from .shop import dp
 from .menu import dp
 from .converter import dp
 from .contracts import dp
+from .bot_settings import dp
 from .echo import dp
 
 
