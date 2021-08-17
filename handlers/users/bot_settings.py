@@ -4,7 +4,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQu
 from data.peewee import Miner
 from loader import dp
 
-def settings():
+def settings_kb():
     buttons = [
         InlineKeyboardButton(text='🔊Уведомления', callback_data='🔊'),
         InlineKeyboardButton(text='🤖Другое', callback_data='🤖')
@@ -52,7 +52,7 @@ def settings_script(miner_setting, minerid, call):
 
 @dp.message_handler(text='⚙️Настройки')
 async def settings(message: types.Message):
-    await message.answer(text='⚙️Открываем настройки...', reply_markup=settings())
+    await message.answer(text='⚙️Открываем настройки...', reply_markup=settings_kb())
 
 @dp.callback_query_handler(text='🔊')
 async def notify(call: CallbackQuery):
