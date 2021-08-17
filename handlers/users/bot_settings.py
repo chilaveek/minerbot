@@ -75,7 +75,14 @@ async def notify(call: CallbackQuery):
 @dp.callback_query_handler(text='reset_bot_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    await settings_script(miner.notify_reset, call.from_user.id, call)
+    if miner.notify_reset is False:
+        miner.notify_reset = True
+        miner.save()
+    elif miner.notify_reset is True:
+        miner.notify_reset = False
+        miner.save()
+    return call.message.edit_text(text='Изменения приняты. Нажмите на кнопку, чтобы настроить уведомления',
+                           reply_markup=notifications(miner.minerid))
 
 
 
