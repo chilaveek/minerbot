@@ -48,7 +48,8 @@ def settings_script(miner_setting, minerid, call):
     elif miner_setting is True:
         miner_setting = False
     miner.save()
-    call.message.reply_markup = notifications(minerid)
+    return call.message.edit_text(chat_id=minerid, text='Нажмите на кнопку, чтобы настроить уведомления:',
+                           reply_markup=notifications(minerid))
 
 @dp.message_handler(text='⚙️Настройки')
 async def settings(message: types.Message):
@@ -62,17 +63,17 @@ async def notify(call: CallbackQuery):
 @dp.callback_query_handler(text='balance_end_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    settings_script(miner.notify_balance, miner.minerid, call)
+    await settings_script(miner.notify_balance, miner.minerid, call)
 
 @dp.callback_query_handler(text='change_courses_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    settings_script(miner.notify_courses, miner.minerid, call)
+    await settings_script(miner.notify_courses, miner.minerid, call)
 
 @dp.callback_query_handler(text='reset_bot_notify')
 async def notify(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    settings_script(miner.notify_reset, miner.minerid, call)
+    await settings_script(miner.notify_reset, miner.minerid, call)
 
 
 
