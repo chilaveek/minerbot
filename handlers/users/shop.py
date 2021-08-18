@@ -8,8 +8,8 @@ from loader import dp
 
 def change_type_assort():
     buttons = [
-        InlineKeyboardButton(text='👷‍♂️Шахтёры', callback_data='miners'),
-        InlineKeyboardButton(text='🗻Шахты', callback_data='mines')
+        InlineKeyboardButton(text='👷‍♂️ Шахтёры', callback_data='miners'),
+        InlineKeyboardButton(text='🗻 Шахты', callback_data='mines')
     ]
     assortment = InlineKeyboardMarkup(row_width=2)
     assortment.add(*buttons)

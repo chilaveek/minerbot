@@ -22,6 +22,10 @@ async def on_startup(dp):
         bot = Bot(config.BOT_TOKEN)
         miner = Miner.get(minerid=gamer.minerid)
         miner.balance += miner.expenses/60
+        if miner.notify_reset is True:
+            await bot.send_message(text=
+                'Бот был перезапущен из-за технических причин. Если пришло обновление, мы оповестим вас через '
+                'некоторое время.', chat_id=gamer.minerid)
         miner.save()
 
 
@@ -93,6 +97,10 @@ def check_course(course, default_price):
 async def change_courses():
     while True:
         bot = Bot(config.BOT_TOKEN)
+        for gamer in Miner.select():
+            miner = Miner.get(minerid=gamer.minerid)
+            if miner.notify_courses is True:
+                await bot.send_message(text='Курс руд на бирже изменился! Проверьте', chat_id=gamer.minerid)
 
         for course in Courses.select():
             course = Courses.get(id=1)
@@ -112,14 +120,12 @@ async def check_work_id():
         for gamer in Miner.select():
             bot = Bot(config.BOT_TOKEN)
             miner = Miner.get(minerid=gamer.minerid)
-            if miner.balance >= miner.expenses:
-                miner.work_id_expenses = True
-                miner.save()
-            elif miner.balance < miner.expenses:
-                miner.work_id_expenses = False
-                await bot.send_message(chat_id=gamer.minerid, text='Шахтёры взбунтовались! Срочно продайте свои '
-                                                                   'поставки ресурсов, чтобы продолжить работу')
-                miner.save()
+            if miner.notify_balance is True:
+                if miner.work_id_expenses is False:
+                    await bot.send_message(text='Шахтёры устроили забастовку, из-за невыплаченных зарплат. '
+                                                'Срочно вернитесь и продайте накопленное, производство стоит!',
+                                           chat_id=gamer.minerid)
+
 
         await asyncio.sleep(3600)
 
