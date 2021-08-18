@@ -48,7 +48,7 @@ async def pay():
         bot = Bot(config.BOT_TOKEN)
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
-            if miner.balance >= miner.expenses:
+            if miner.balance >= miner.expenses/60:
                 miner.work_id_expenses = True
                 miner.balance -= miner.expenses/60
                 miner.save()
