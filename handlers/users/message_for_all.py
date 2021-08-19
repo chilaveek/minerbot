@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram.utils.exceptions import Unauthorized
 
 from data import config
 from data.config import admins
@@ -27,8 +28,11 @@ async def message_send(message: types.Message, state: FSMContext):
     send_message = message.text
     bot = Bot(config.BOT_TOKEN)
     for gamer in Miner.select():
-        miner = Miner.get(minerid=gamer.minerid)
-        await bot.send_message(chat_id=gamer.minerid, text=send_message)
+        try:
+            miner = Miner.get(minerid=gamer.minerid)
+            await bot.send_message(chat_id=gamer.minerid, text=send_message)
+        except Unauthorized:
+            pass
 
     await state.finish()
 
