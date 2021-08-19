@@ -22,11 +22,11 @@ async def on_startup(dp):
     for gamer in Miner.select():
         bot = Bot(config.BOT_TOKEN)
         miner = Miner.get(minerid=gamer.minerid)
-        miner.balance += miner.expenses/60
+        miner.balance += miner.expenses / 60
         if miner.notify_reset is True:
             await bot.send_message(text=
-                'Бот был перезапущен из-за технических причин. Если пришло обновление, мы оповестим вас через '
-                'некоторое время.', chat_id=gamer.minerid)
+                                   'Бот был перезапущен из-за технических причин. Если пришло обновление, мы оповестим вас через '
+                                   'некоторое время.', chat_id=gamer.minerid)
         miner.save()
 
 
@@ -53,9 +53,9 @@ async def pay():
         bot = Bot(config.BOT_TOKEN)
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
-            if miner.balance >= miner.expenses/60:
+            if miner.balance >= miner.expenses / 60:
                 miner.work_id_expenses = True
-                miner.balance -= miner.expenses/60
+                miner.balance -= miner.expenses / 60
                 miner.save()
             else:
                 miner.work_id_expenses = False
@@ -128,7 +128,6 @@ async def check_work_id():
                     await bot.send_message(text='Шахтёры устроили забастовку, из-за невыплаченных зарплат. '
                                                 'Срочно вернитесь и продайте накопленное, производство стоит!',
                                            chat_id=gamer.minerid)
-
 
         await asyncio.sleep(3600)
 
