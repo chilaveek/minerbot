@@ -35,7 +35,7 @@ async def work():
         bot = Bot(config.BOT_TOKEN)
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
-            if miner.work_id_expenses is True and miner.work_id_converter is True:
+            if miner.work_id_expenses is True:
                 miner.coal += 3 * miner.minerstype1
                 miner.tin += 2 * miner.minerstype1 + 3 * miner.minerstype2
                 miner.iron += 1 * miner.minerstype1 + 2 * miner.minerstype2 + 3 * miner.minerstype3

@@ -41,10 +41,10 @@ def get_contracts():
         }
 
     elif ore1 != ore2 != ore3:
-        contract = {
-            ore1: quantity1,
-            ore2: quantity2,
-            ore3: quantity3,
-        }
+        contract = (
+            (ore1, quantity1),
+            (ore2, quantity2),
+            (ore3, quantity3),
+        )
 
     return contract
