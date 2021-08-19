@@ -36,7 +36,7 @@ async def work():
         for gamer in Miner.select():
             miner = Miner.get(minerid=gamer.minerid)
             if miner.work_id_expenses is True:
-                miner.coal += 3 * miner.minerstype1
+                miner.coal += 3 * miner.minerstype1 + 10 * miner.minerstype_coal
                 miner.tin += 2 * miner.minerstype1 + 3 * miner.minerstype2
                 miner.iron += 1 * miner.minerstype1 + 2 * miner.minerstype2 + 3 * miner.minerstype3
                 miner.silver += 1 * miner.minerstype2 + 2 * miner.minerstype3

@@ -17,6 +17,7 @@ def change_type_assort():
 
 def get1_assort():
     buttons = [
+        InlineKeyboardButton(text='👷‍♂️🔳', callback_data='👷‍♂️🔳'),
         InlineKeyboardButton(text='👷‍♂️1⭐️', callback_data='👷‍♂️1⭐️'),
         InlineKeyboardButton(text='👷‍♂️2⭐️', callback_data='👷‍♂️2⭐️'),
         InlineKeyboardButton(text='👷‍♂️3⭐️', callback_data='👷‍♂️3⭐️'),
@@ -28,6 +29,7 @@ def get1_assort():
 
 def get2_assort():
     buttons = [
+        InlineKeyboardButton(text='🗻🔳', callback_data='🗻🔳'),
         InlineKeyboardButton(text='🗻1⭐️', callback_data='🗻1⭐️'),
         InlineKeyboardButton(text='🗻2⭐️', callback_data='🗻2⭐️'),
         InlineKeyboardButton(text='🗻3⭐️', callback_data='🗻3⭐️'),
@@ -77,6 +79,18 @@ async def shop(message: types.Message):
 async def shop_miners(call: CallbackQuery):
     await call.message.edit_text(text='Биржа труда шахтёров приветствует вас!', reply_markup=get1_assort())
 
+@dp.callback_query_handler(text='👷‍♂️🔳')
+async def shop_miners(call: CallbackQuery):
+    await call.message.edit_text(parse_mode='html',
+                                 text='<b>Шахтёр Онли Уголь</b>\n\n'
+                                      '💬По неведомой причине, умеет добывать только уголь\n--\n'
+                                      '<b>🤑Цена:</b> 150$\n--\n'
+                                      '<b>💫ЗП:</b> 10$/час\n--\n'
+                                      '<b>📄Характеристики:</b> '
+                                      '10 угля/сек',
+                                 reply_markup=get_keyboard('miner_coal', '👷‍♂️4⭐️', '👷‍♂️1⭐️'))
+
+
 @dp.callback_query_handler(text='👷‍♂️1⭐️')
 async def shop_miners(call: CallbackQuery):
     await call.message.edit_text(parse_mode='html',
@@ -86,7 +100,7 @@ async def shop_miners(call: CallbackQuery):
                                       '<b>💫ЗП:</b> 50$/час\n--\n'
                                       '<b>📄Характеристики:</b> '
                                       '3 угля/cек, 2 олова/сек, 1 железо/сек',
-                                 reply_markup=get_keyboard('miner1star', '👷‍♂️4⭐️', '👷‍♂️2⭐️'))
+                                 reply_markup=get_keyboard('miner1star', '👷‍♂️🔳', '👷‍♂️2⭐️'))
 
 @dp.callback_query_handler(text='👷‍♂️2⭐️')
 async def shop_miners(call: CallbackQuery):
@@ -119,7 +133,23 @@ async def shop_miners(call: CallbackQuery):
                                       '<b>💫ЗП:</b> 80 000$/час\n--\n'
                                       '<b>📄Характеристики:</b> '
                                       '3 золота/сек 2 платины/сек, 1 палладий/сек',
-                                 reply_markup=get_keyboard('miner4star', '👷‍♂️3⭐️', '👷‍♂️1⭐️'))
+                                 reply_markup=get_keyboard('miner4star', '👷‍♂️3⭐️', '👷‍♂️🔳'))
+
+@dp.callback_query_handler(text='miner_coal')
+async def shop_miners(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
+    if miner.balance >= 150:
+        if miner.mines_coal * 10 > miner.minerstype_coal:
+            miner.balance -= 150
+            miner.minerstype_coal += 1
+            miner.expenses += 10
+            miner.save()
+            await call.message.edit_text(text='+1 Шахтёр Онли Уголь в вашу шахту!', reply_markup=change_type_assort())
+        else:
+            await call.message.edit_text(text='Все шахты переполнены! Куда нам?', reply_markup=change_type_assort())
+    else:
+        await call.message.edit_text(text='Не хватает денег на счету, проверьте баланс',
+                                     reply_markup=change_type_assort())
 
 @dp.callback_query_handler(text='miner1star')
 async def shop_miners(call: CallbackQuery):
@@ -186,6 +216,17 @@ async def shop_miners(call: CallbackQuery):
 async def shop_mines(call: CallbackQuery):
     await call.message.edit_text(text='Магазин земель горных местностей приветствует вас!', reply_markup=get2_assort())
 
+@dp.callback_query_handler(text='🗻🔳')
+async def shop_mines(call: CallbackQuery):
+    type_mine = 'Угольная Шахта'
+    description = 'Узкоспециализированная шахта для добычи угля'
+    type_miner = 'Онли Уголь'
+    plases = '10'
+    miner = Miner.get(minerid=call.from_user.id)
+
+    await call.message.edit_text(parse_mode='html',
+                                 text=mines_shop(type_mine, description, type_miner, plases, 500, miner.mines_coal),
+                                 reply_markup=get_keyboard('mines_coal', '🗻1⭐️', '🗻4⭐️'))
 @dp.callback_query_handler(text='🗻1⭐️')
 async def shop_mines(call: CallbackQuery):
     type_mine = 'Небольшая шахта'
@@ -228,7 +269,19 @@ async def shop_mines(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
     await call.message.edit_text(parse_mode='html',
                                  text=mines_shop(type_mine, description, type_miner, plases, 5000000, miner.mines4),
-                                 reply_markup=get_keyboard('mines4star', '🗻3⭐️', '🗻1⭐️'))
+                                 reply_markup=get_keyboard('mines4star', '🗻3⭐️', '🗻🔳'))
+
+@dp.callback_query_handler(text='mines_coal')
+async def shop_mines(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
+    if miner.balance >= 500 * (1 + miner.mines_coal * 0.25):
+        miner.balance -= 500 * (1 + miner.mines_coal * 0.25)
+        miner.mines_coal += 1
+        miner.save()
+        await call.message.edit_text(text='+1 Шахта в ваших владениях!', reply_markup=change_type_assort())
+    else:
+        await call.message.edit_text(text='Не хватает денег на счету, проверьте баланс',
+                                     reply_markup=change_type_assort())
 
 @dp.callback_query_handler(text='mines1star')
 async def shop_mines(call: CallbackQuery):
@@ -273,3 +326,8 @@ async def shop_mines(call: CallbackQuery):
         await call.message.edit_text(text='+1 Шахта в ваших владениях!', reply_markup=change_type_assort())
     else:
         await call.message.edit_text(text='Не хватает денег на счету, проверьте баланс', reply_markup=change_type_assort())
+
+
+@dp.callback_query_handler(text='cancel')
+async def cancel(call: CallbackQuery):
+    await call.message.edit_text(text='Вернулись на главную', reply_markup=change_type_assort())
