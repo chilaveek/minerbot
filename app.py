@@ -121,6 +121,8 @@ async def check_work_id():
         for gamer in Miner.select():
             bot = Bot(config.BOT_TOKEN)
             miner = Miner.get(minerid=gamer.minerid)
+            miner.balance += miner.deposit
+            miner.save()
             if miner.notify_balance is True:
                 if miner.work_id_expenses is False:
                     await bot.send_message(text='Шахтёры устроили забастовку, из-за невыплаченных зарплат. '
