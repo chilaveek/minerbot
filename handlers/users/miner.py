@@ -28,7 +28,7 @@ def mining_message_await(miner):
     f'\nПользователь: @{miner.username}' \
     f'\n---' \
     f'\n💰 Баланс:{miner.balance:.2f}$' \
-    f'\n💸 Затраты: {miner.expenses/60}$/мин' \
+    f'\n💸 Затраты: {(miner.expenses/60):.2f}$/мин' \
     f'\n---' \
     f'\n⬛️ Уголь: {miner.coal} шт.\n' \
     f'\n🟧 Олово: {miner.tin} шт.\n' \
