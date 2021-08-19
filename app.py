@@ -129,6 +129,7 @@ async def check_work_id():
                                                 'Срочно вернитесь и продайте накопленное, производство стоит!',
                                            chat_id=gamer.minerid)
 
+
         await asyncio.sleep(3600)
 
 
