@@ -41,6 +41,7 @@ class Miner(Model):
     notify_courses = BooleanField(default=False)
     notify_reset = BooleanField(default=False)
     fast_sell = BooleanField(default=False)
+    deposit = IntegerField(default=0)
     class Meta:
         database = db
 

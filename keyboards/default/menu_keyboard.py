@@ -3,19 +3,33 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 menu = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='⛏Добыча'),
-            KeyboardButton(text='🛒Магазин'),
+            KeyboardButton(text='⛏ Добыча'),
+            KeyboardButton(text='🛒 Магазин'),
         ],
         [
-            KeyboardButton('💱Конвертировать'),
-            KeyboardButton(text='😇Создатель'),
+            KeyboardButton('🏦 Банк'),
+            KeyboardButton(text='😇 Создатель'),
         ],
         [
-            KeyboardButton(text='💳Донат&Вывод'),
-            KeyboardButton(text='⚙️Настройки')
+            KeyboardButton(text='💳 Донат&Вывод'),
+            KeyboardButton(text='⚙️ Настройки')
         ],
     ],
 
+    resize_keyboard=True
+)
+
+bank_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text='💱 Рынок руд'),
+            KeyboardButton(text='💵 Вклады'),
+            KeyboardButton(text='📃 Контракты'),
+        ],
+        [
+            KeyboardButton(text='🔙Назад'),
+        ]
+    ],
     resize_keyboard=True
 )
 

@@ -1,6 +1,7 @@
 import random
 
 from data import config
+from data.config import admins
 from data.peewee import Miner, Courses
 from utils.set_bot_commands import set_default_commands
 import asyncio

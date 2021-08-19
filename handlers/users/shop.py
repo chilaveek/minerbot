@@ -47,7 +47,29 @@ def get_keyboard(cb_data, cb_back, cb_forward):
     keyboard = InlineKeyboardMarkup(row_width=4)
     keyboard.add(*buttons)
     return keyboard
-@dp.message_handler(text='🛒Магазин')
+
+def mines_shop(type_mine, description, type_miner, plases, default_price, miner_mines):
+    price = default_price * (1 + miner_mines * 0.25)
+    price = str(price)
+    text = '<b>'+ type_mine + '</b>\n\n' \
+    '💬 '+ description +'\n--\n' \
+    '<b>🤑 Цена: </b>' + price + '$\n--\n' \
+    '<b>📄 Характеристики:</b> ' \
+    'Доступна для шахтёров типа ' + type_miner + ', ' + str(plases) + ' мест'
+    return text
+
+
+def mines_script(miner, default_price, mine_type):
+    if miner.balance >= default_price:
+        miner.balance -= default_price
+        mine_type += 1
+        miner.save()
+        text='+1 Шахта в ваших владениях!'
+    else:
+        text='Не хватает денег на счету, проверьте баланс',
+    return text
+
+@dp.message_handler(text='🛒 Магазин')
 async def shop(message: types.Message):
     await message.answer('Вы зашли в <b>🛒Магазин</b>. Не уходите с пустыми руками', reply_markup=change_type_assort())
 
@@ -166,49 +188,53 @@ async def shop_mines(call: CallbackQuery):
 
 @dp.callback_query_handler(text='🗻1⭐️')
 async def shop_mines(call: CallbackQuery):
+    type_mine = 'Небольшая шахта'
+    description = 'Неглубокая шахта в горной местности'
+    type_miner = 'Новичок'
+    plases = '7'
+    miner = Miner.get(minerid=call.from_user.id)
     await call.message.edit_text(parse_mode='html',
-                                 text='<b>Небольшая Шахта</b>\n\n'
-                                      '💬Небольшая шахта в горной местности\n--\n'
-                                      '<b>🤑Цена:</b> 8000$\n--\n'
-                                      '<b>📄Характеристики:</b> '
-                                      'Доступна для шахтёров типа Новичок, 7 мест',
+                                 text=mines_shop(type_mine, description, type_miner, plases, 8000, miner.mines1),
                                  reply_markup=get_keyboard('mines1star', '🗻4⭐️', '🗻2⭐️'))
 
 @dp.callback_query_handler(text='🗻2⭐️')
 async def shop_mines(call: CallbackQuery):
+    type_mine = 'Стандартная'
+    description = 'Стандартная плодородная шахта'
+    type_miner = 'Бывалый'
+    plases = '7'
+    miner = Miner.get(minerid=call.from_user.id)
     await call.message.edit_text(parse_mode='html',
-                                 text='<b>Стандартная Шахта</b>\n\n'
-                                      '💬Стандартная плодородня шахта\n--\n'
-                                      '<b>🤑Цена:</b> 25 000$\n--\n'
-                                      '<b>📄Характеристики:</b> '
-                                      'Доступна для шахтёров типа Бывалый, 7 мест',
+                                 text=mines_shop(type_mine, description, type_miner, plases, 25000, miner.mines2),
                                  reply_markup=get_keyboard('mines2star', '🗻1⭐️', '🗻3⭐️'))
 
 @dp.callback_query_handler(text='🗻3⭐️')
 async def shop_mines(call: CallbackQuery):
+    type_mine = 'Глубокая шахта'
+    description = 'Достаточно глубокая шахта. Неопытные могут потеряться'
+    type_miner = 'Опытный'
+    plases = '7'
+    miner = Miner.get(minerid=call.from_user.id)
     await call.message.edit_text(parse_mode='html',
-                                 text='<b>Глубокая Шахта</b>\n\n'
-                                      '💬Достаточно глубокая шахта. Неопытные могут потеряться\n--\n'
-                                      '<b>🤑Цена:</b> 100 000$\n--\n'
-                                      '<b>📄Характеристики:</b> '
-                                      'Доступна для шахтёров типа Опытный, 7 мест',
+                                 text=mines_shop(type_mine, description, type_miner, plases, 100000, miner.mines3),
                                  reply_markup=get_keyboard('mines3star', '🗻2⭐️', '🗻4⭐️'))
 
 @dp.callback_query_handler(text='🗻4⭐️')
 async def shop_mines(call: CallbackQuery):
+    type_mine = 'Очень глубокая шахта'
+    description = 'Огромная шахта тунеллей как в фильме "Спуск"'
+    type_miner = 'Супер'
+    plases = '3'
+    miner = Miner.get(minerid=call.from_user.id)
     await call.message.edit_text(parse_mode='html',
-                                 text='<b>Очень Глубокая Шахта</b>\n\n'
-                                      '💬Огромная шахта, тунеллей как в фильме "Спуск"\n--\n'
-                                      '<b>🤑Цена:</b> 5 000 000$\n--\n'
-                                      '<b>📄Характеристики:</b> '
-                                      'Доступна для шахтёров типа Супер, 3 места',
+                                 text=mines_shop(type_mine, description, type_miner, plases, 5000000, miner.mines4),
                                  reply_markup=get_keyboard('mines4star', '🗻3⭐️', '🗻1⭐️'))
 
 @dp.callback_query_handler(text='mines1star')
 async def shop_mines(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    if miner.balance >= 4500:
-        miner.balance -= 4500
+    if miner.balance >= 8000*(1+miner.mines1*0.25):
+        miner.balance -= 8000*(1+miner.mines1*0.25)
         miner.mines1 += 1
         miner.save()
         await call.message.edit_text(text='+1 Шахта в ваших владениях!', reply_markup=change_type_assort())
@@ -218,8 +244,8 @@ async def shop_mines(call: CallbackQuery):
 @dp.callback_query_handler(text='mines2star')
 async def shop_mines(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    if miner.balance >= 25000:
-        miner.balance -= 25000
+    if miner.balance >= 25000*(1+miner.mines2*0.25):
+        miner.balance -= 25000*(1+miner.mines2*0.25)
         miner.mines2 += 1
         miner.save()
         await call.message.edit_text(text='+1 Шахта в ваших владениях!', reply_markup=change_type_assort())
@@ -229,8 +255,8 @@ async def shop_mines(call: CallbackQuery):
 @dp.callback_query_handler(text='mines3star')
 async def shop_mines(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    if miner.balance >= 100000:
-        miner.balance -= 100000
+    if miner.balance >= 100000*(1+miner.mines3*0.25):
+        miner.balance -= 100000*(1+miner.mines3*0.25)
         miner.mines3 += 1
         miner.save()
         await call.message.edit_text(text='+1 Шахта в ваших владениях!', reply_markup=change_type_assort())
@@ -240,8 +266,8 @@ async def shop_mines(call: CallbackQuery):
 @dp.callback_query_handler(text='mines4star')
 async def shop_mines(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
-    if miner.balance >= 5000000:
-        miner.balance -= 5000000
+    if miner.balance >= 5000000*(1+miner.mines4*0.25):
+        miner.balance -= 5000000*(1+miner.mines4*0.25)
         miner.mines4 += 1
         miner.save()
         await call.message.edit_text(text='+1 Шахта в ваших владениях!', reply_markup=change_type_assort())

@@ -59,7 +59,7 @@ def other_settings(minerid):
     return keyboard
 
 
-@dp.message_handler(text='⚙️Настройки')
+@dp.message_handler(text='⚙️ Настройки')
 async def settings(message: types.Message):
     await message.answer(text='⚙️Открываем настройки...', reply_markup=settings_kb())
 

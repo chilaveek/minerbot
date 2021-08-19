@@ -4,6 +4,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQu
 
 from data.config import admins
 from data.peewee import Miner, Courses
+from handlers.users.bank.bank import bank_keyboard
 from handlers.users.miner import statistic_keyboard
 from keyboards.default.menu_keyboard import menu
 from loader import dp
@@ -12,27 +13,13 @@ from loader import dp
 def sellkeyboard(minerid):
     miner = Miner.get(minerid=minerid)
 
-    sell_keyboard = ReplyKeyboardMarkup(
-        resize_keyboard=True,
-        keyboard=[
-            #            [
-            #                KeyboardButton(text='Уголь'),
-            #                KeyboardButton(text='Олово'),
-            #                KeyboardButton(text='Железо'),
-            #
-            #            ],
-            #            [
-            #                KeyboardButton(text='Серебро'),
-            #                KeyboardButton(text='Золото'),
-            #                KeyboardButton(text='Платина'),
-            #            ],
-            [
-            #                KeyboardButton(text='Палладий'),
-                KeyboardButton(text='💵Продать всё'),
-                KeyboardButton(text='🔙Назад')
-            ]
-        ]
-    )
+    buttons = [
+        InlineKeyboardButton(text='💵 Продать всё', callback_data='sell_all'),
+        InlineKeyboardButton(text='Назад', callback_data='in_bank')
+    ]
+    sell_keyboard = InlineKeyboardMarkup(row_width=1)
+    sell_keyboard.add(*buttons)
+
     return sell_keyboard
 
 
@@ -115,40 +102,34 @@ async def info_courses(call: CallbackQuery):
                                            reply_markup=statistic_keyboard('update_course', '⛏'))
 
 
-@dp.message_handler(text='💱Конвертировать')
-async def converter(message: types.Message):
-    miner = Miner.get(minerid=message.from_user.id)
+@dp.callback_query_handler(text='market_ore')
+async def converter(call: CallbackQuery):
+    miner = Miner.get(minerid=call.from_user.id)
     course = Courses.get()
     miner.work_id_converter = False
     miner.save()
     money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
             + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
             + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
-    await message.answer(text=f'Вас приветствует биржа руд и ценных бумаг.\nРабота в шахтах <b>приостановлена</b>.'
-                              f'\n🧾Стоимость сырья на продажу: {money:.2f}$\n'
-                              f'<b>\n📊Из них - </b>\n'
-                              f'\n⬛️Уголь - {coal(miner.coal, course.coal):.2f}\n'
-                              f'\n🟧Олово - {tin(miner.tin, course.tin):.2f}\n'
-                              f'\n⬜️Железо - {iron(miner.iron, course.iron):.2f}\n'
-                              f'\n⬜️Серебро - {silver(miner.silver, course.silver):.2f}\n'
-                              f'\n🟨Золото - {aurum(miner.aurum, course.aurum):.2f}\n'
-                              f'\n🟥Платина - {platinum(miner.platinum, course.platinum):.2f}\n'
-                              f'\n🟦Палладий - {palladium(miner.palladium, course.palladium):.2f}\n',
-                         reply_markup=sellkeyboard(message.from_user.id))
+    await call.message.edit_text(text=f'Вас приветствует биржа руд и ценных бумаг.\nРабота в шахтах <b>приостановлена</b>.'
+                              f'\n🧾 Стоимость сырья на продажу: {money:.2f}$\n'
+                              f'<b>\n📊 Из них - </b>\n'
+                              f'\n⬛️ Уголь - {coal(miner.coal, course.coal):.2f}\n'
+                              f'\n🟧 Олово - {tin(miner.tin, course.tin):.2f}\n'
+                              f'\n⬜️ Железо - {iron(miner.iron, course.iron):.2f}\n'
+                              f'\n⬜️ Серебро - {silver(miner.silver, course.silver):.2f}\n'
+                              f'\n🟨 Золото - {aurum(miner.aurum, course.aurum):.2f}\n'
+                              f'\n🟥 Платина - {platinum(miner.platinum, course.platinum):.2f}\n'
+                              f'\n🟦 Палладий - {palladium(miner.palladium, course.palladium):.2f}\n',
+                         reply_markup=sellkeyboard(call.from_user.id))
 
 
-@dp.message_handler(text='🔙Назад')
-async def back(message: types.Message):
-    miner = Miner.get(minerid=message.from_user.id)
-    miner.work_id_converter = True
-    miner.save()
-    await message.answer(text='Возвращаемся в офис. Работа в шахтах возобновилась', reply_markup=menu)
 
 
-@dp.message_handler(text='💵Продать всё')
-async def sell(message: types.Message):
+@dp.callback_query_handler(text='sell_all')
+async def sell(call: CallbackQuery):
     course = Courses.get()
-    miner = Miner.get(minerid=message.from_user.id)
+    miner = Miner.get(minerid=call.from_user.id)
     money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
             + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
             + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
@@ -156,8 +137,8 @@ async def sell(message: types.Message):
     miner.coal, miner.tin, miner.iron, miner.silver, miner.aurum, miner.platinum, miner.palladium = 0, 0, 0, 0, 0, 0, 0
     miner.work_id_converter = True
     miner.save()
-    await message.answer(text=f'📈Сделка прошла успешно! Вы продали всё, работа <b>возобновлена</b>.'
-                              f'\n💰Баланс сейчас: {miner.balance:.2f}$', reply_markup=menu)
+    await call.message.edit_text(text=f'📈Сделка прошла успешно! Вы продали всё, работа <b>возобновлена</b>.'
+                              f'\n💰Баланс сейчас: {miner.balance:.2f}$', reply_markup=bank_keyboard())
 
 
 @dp.message_handler(Command('reset_courses'))
