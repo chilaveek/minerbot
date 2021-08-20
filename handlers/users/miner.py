@@ -38,8 +38,8 @@ def mining_message_await(miner):
     f'\n🟥 Платина: {miner.platinum} гр.\n' \
     f'\n🟦 Палладий: {miner.palladium} гр.\n' \
     f'\n---' \
-    f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4 + miner.mines_coal} шт.' \
-    f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4 + miner.minerstype_coal} чел.' \
+    f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4 + miner.mines_coal + miner.mines_iron + miner.mines_aurum + miner.mines_palladium} шт.' \
+    f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4 + miner.minerstype_coal + miner.minerstype_iron + miner.minerstype_aurum + miner.minerstype_palladium} чел.' \
     f'\n---' \
     f'\nПоделись статистикой с 👬друзьями!'
     return text
