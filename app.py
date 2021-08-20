@@ -78,7 +78,7 @@ def check_course(course, default_price):
             changer = course * random.randint(-25, 35) * 0.01
 
     elif course == default_price:
-        changer = course * random.randint(-30, 30) * 0.01
+        changer = course * random.randint(-45, 65) * 0.01
 
     elif course > default_price:
         if course >= 1.4 * default_price:
