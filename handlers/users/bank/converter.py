@@ -14,48 +14,24 @@ def sellkeyboard(minerid):
     miner = Miner.get(minerid=minerid)
 
     buttons = [
-        InlineKeyboardButton(text='💵 Продать всё', callback_data='sell_all'),
+        InlineKeyboardButton(text='Уголь', callback_data='coal'),
+        InlineKeyboardButton(text='Олово', callback_data='tin'),
+        InlineKeyboardButton(text='Железо', callback_data='iron'),
+        InlineKeyboardButton(text='Серебро', callback_data='silver'),
+        InlineKeyboardButton(text='Золото', callback_data='aurum'),
+        InlineKeyboardButton(text='Платина', callback_data='platinum'),
+        InlineKeyboardButton(text='Палладий', callback_data='palladium'),
+        InlineKeyboardButton(text='💵 Всё', callback_data='sell_all'),
         InlineKeyboardButton(text='Назад', callback_data='in_bank')
     ]
-    sell_keyboard = InlineKeyboardMarkup(row_width=1)
+    sell_keyboard = InlineKeyboardMarkup(row_width=3)
     sell_keyboard.add(*buttons)
 
     return sell_keyboard
 
-
-def coal(coal, coalcourse):
-    coalprice = coal * coalcourse
-    return coalprice
-
-
-def tin(tin, tincourse):
-    tinprice = tin * tincourse
-    return tinprice
-
-
-def iron(iron, ironcourse):
-    ironprice = iron * ironcourse
-    return ironprice
-
-
-def silver(silver, silvercourse):
-    silverprice = silver * silvercourse
-    return silverprice
-
-
-def aurum(aurum, aurumcourse):
-    aurumprice = aurum * aurumcourse
-    return aurumprice
-
-
-def platinum(platinum, platinumcourse):
-    platinumprice = platinum * platinumcourse
-    return platinumprice
-
-
-def palladium(palladium, palladiumcourse):
-    palladiumprice = palladium * palladiumcourse
-    return palladiumprice
+def ore_price(ore, ore_course):
+    ans = ore * ore_course
+    return ans
 
 def percent_create(ore, default_course):
     ans = ''
@@ -84,9 +60,9 @@ def message_courses_await(course, money):
 async def info_courses(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
     course = Courses.get()
-    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
-            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
-            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+    money = ore_price(miner.coal, course.coal) + ore_price(miner.tin, course.tin) + ore_price(miner.iron, course.iron) \
+            + ore_price(miner.silver, course.silver) + ore_price(miner.aurum, course.aurum) \
+            + ore_price(miner.platinum, course.platinum) + ore_price(miner.palladium, course.palladium)
     await call.message.edit_text(text=message_courses_await(course, money),
                                  reply_markup=statistic_keyboard('update_course', '⛏', miner.fast_sell))
 
@@ -94,9 +70,9 @@ async def info_courses(call: CallbackQuery):
 async def info_courses(call: CallbackQuery):
     miner = Miner.get(minerid=call.from_user.id)
     course = Courses.get()
-    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
-            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
-            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+    money = ore_price(miner.coal, course.coal) + ore_price(miner.tin, course.tin) + ore_price(miner.iron, course.iron) \
+            + ore_price(miner.silver, course.silver) + ore_price(miner.aurum, course.aurum) \
+            + ore_price(miner.platinum, course.platinum) + ore_price(miner.palladium, course.palladium)
 
     await call.message.edit_text(text=message_courses_await(course, money),
                                            reply_markup=statistic_keyboard('update_course', '⛏'))
@@ -108,19 +84,19 @@ async def converter(call: CallbackQuery):
     course = Courses.get()
     miner.work_id_converter = False
     miner.save()
-    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
-            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
-            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+    money = ore_price(miner.coal, course.coal) + ore_price(miner.tin, course.tin) + ore_price(miner.iron, course.iron) \
+            + ore_price(miner.silver, course.silver) + ore_price(miner.aurum, course.aurum) \
+            + ore_price(miner.platinum, course.platinum) + ore_price(miner.palladium, course.palladium)
     await call.message.edit_text(text=f'Вас приветствует биржа руд и ценных бумаг.\nРабота в шахтах <b>приостановлена</b>.'
                               f'\n🧾 Стоимость сырья на продажу: {money:.2f}$\n'
                               f'<b>\n📊 Из них - </b>\n'
-                              f'\n⬛️ Уголь - {coal(miner.coal, course.coal):.2f}\n'
-                              f'\n🟧 Олово - {tin(miner.tin, course.tin):.2f}\n'
-                              f'\n⬜️ Железо - {iron(miner.iron, course.iron):.2f}\n'
-                              f'\n⬜️ Серебро - {silver(miner.silver, course.silver):.2f}\n'
-                              f'\n🟨 Золото - {aurum(miner.aurum, course.aurum):.2f}\n'
-                              f'\n🟥 Платина - {platinum(miner.platinum, course.platinum):.2f}\n'
-                              f'\n🟦 Палладий - {palladium(miner.palladium, course.palladium):.2f}\n',
+                              f'\n⬛️ Уголь - {ore_price(miner.coal, course.coal):.2f}\n'
+                              f'\n🟧 Олово - {ore_price(miner.tin, course.tin):.2f}\n'
+                              f'\n⬜️ Железо - {ore_price(miner.iron, course.iron):.2f}\n'
+                              f'\n⬜️ Серебро - {ore_price(miner.silver, course.silver):.2f}\n'
+                              f'\n🟨 Золото - {ore_price(miner.aurum, course.aurum):.2f}\n'
+                              f'\n🟥 Платина - {ore_price(miner.platinum, course.platinum):.2f}\n'
+                              f'\n🟦 Палладий - {ore_price(miner.palladium, course.palladium):.2f}\n',
                          reply_markup=sellkeyboard(call.from_user.id))
 
 
@@ -130,9 +106,9 @@ async def converter(call: CallbackQuery):
 async def sell(call: CallbackQuery):
     course = Courses.get()
     miner = Miner.get(minerid=call.from_user.id)
-    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
-            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
-            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+    money = ore_price(miner.coal, course.coal) + ore_price(miner.tin, course.tin) + ore_price(miner.iron, course.iron) \
+            + ore_price(miner.silver, course.silver) + ore_price(miner.aurum, course.aurum) \
+            + ore_price(miner.platinum, course.platinum) + ore_price(miner.palladium, course.palladium)
     miner.balance += money
     miner.coal, miner.tin, miner.iron, miner.silver, miner.aurum, miner.platinum, miner.palladium = 0, 0, 0, 0, 0, 0, 0
     miner.work_id_converter = True
@@ -154,12 +130,76 @@ async def reset(message: types.Message):
 async def fast_sell(call: CallbackQuery):
     course = Courses.get()
     miner = Miner.get(minerid=call.from_user.id)
-    money = coal(miner.coal, course.coal) + tin(miner.tin, course.tin) + iron(miner.iron, course.iron) \
-            + silver(miner.silver, course.silver) + aurum(miner.aurum, course.aurum) \
-            + platinum(miner.platinum, course.platinum) + palladium(miner.palladium, course.palladium)
+    money = ore_price(miner.coal, course.coal) + ore_price(miner.tin, course.tin) + ore_price(miner.iron, course.iron) \
+            + ore_price(miner.silver, course.silver) + ore_price(miner.aurum, course.aurum) \
+            + ore_price(miner.platinum, course.platinum) + ore_price(miner.palladium, course.palladium)
     miner.balance += money
     miner.coal, miner.tin, miner.iron, miner.silver, miner.aurum, miner.platinum, miner.palladium = 0, 0, 0, 0, 0, 0, 0
     miner.work_id_converter = True
     miner.save()
     await call.message.edit_text(text=message_courses_await(course, money),
                                  reply_markup=statistic_keyboard('update_course', '⛏', miner.fast_sell))
+
+@dp.callback_query_handler(text='coal')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.coal, course.coal)
+    miner.coal = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())
+
+@dp.callback_query_handler(text='tin')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.tin, course.tin)
+    miner.tin = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())
+
+@dp.callback_query_handler(text='iron')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.iron, course.iron)
+    miner.iron = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())
+
+@dp.callback_query_handler(text='silver')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.silver, course.silver)
+    miner.silver = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())
+
+
+@dp.callback_query_handler(text='aurum')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.aurum, course.aurum)
+    miner.aurum = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())
+
+@dp.callback_query_handler(text='platinum')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.platinum, course.platinum)
+    miner.platinum = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())
+
+@dp.callback_query_handler(text='palladium')
+async def sell_one_ore(call: CallbackQuery):
+    course = Courses.get()
+    miner = Miner.get(minerid=call.from_user.id)
+    miner.balance += ore_price(miner.palladium, course.palladium)
+    miner.palladium = 0
+    miner.save()
+    await call.message.edit_text(text='Сделка прошла успешно!', reply_markup=bank_keyboard())

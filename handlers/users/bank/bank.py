@@ -9,7 +9,6 @@ def bank_keyboard():
     buttons = [
         InlineKeyboardButton(text='💱 Рынок руд', callback_data='market_ore'),
         InlineKeyboardButton(text='💵 Вклады', callback_data='deposit_in_bank'),
-        InlineKeyboardButton(text='📃 Контракты', callback_data='contract'),
     ]
     kb = InlineKeyboardMarkup(row_width=1).add(*buttons)
     return kb

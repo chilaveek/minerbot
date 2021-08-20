@@ -37,6 +37,7 @@ def notifications(minerid):
         InlineKeyboardButton(text=notify_balance, callback_data='balance_end_notify'),
         InlineKeyboardButton(text=notify_courses, callback_data='change_courses_notify'),
         InlineKeyboardButton(text=notify_reset, callback_data='reset_bot_notify'),
+        InlineKeyboardButton(text='Назад', callback_data='in_settings'),
     ]
     keyboard = InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
@@ -52,7 +53,8 @@ def other_settings(minerid):
         fast_sell_text += '❌'
 
     buttons = [
-        InlineKeyboardButton(text=fast_sell_text, callback_data='fast_sell_activate')
+        InlineKeyboardButton(text=fast_sell_text, callback_data='fast_sell_activate'),
+        InlineKeyboardButton(text='Назад', callback_data='in_settings'),
     ]
     keyboard = InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
@@ -124,3 +126,7 @@ async def activate(call: CallbackQuery):
     await call.message.edit_text(text='Кнопка <b>Быстрая продажа</b> добавлена в раздел <b>⛏Добыча</b>. '
                                       'Нажмите на кнопку, чтобы применить настройку:',
                                  reply_markup=other_settings(call.from_user.id))
+
+@dp.callback_query_handler(text='in_settings')
+async def back(call: CallbackQuery):
+    await call.message.edit_text(text='⚙️ Вернулись...', reply_markup=settings_kb())

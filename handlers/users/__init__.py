@@ -6,7 +6,6 @@ from .shop import dp
 from .menu import dp
 from handlers.users.bank.converter import dp
 from handlers.users.bank.bank import dp
-from handlers.users.bank.contracts import dp
 from handlers.users.bank.deposit import dp
 from .bot_settings import dp
 from .message_for_all import dp

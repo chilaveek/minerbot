@@ -14,7 +14,6 @@ async def on_startup(dp):
     middlewares.setup(dp)
     Miner.create_table()
     Courses.get_or_create()
-
     from utils.notify_admins import on_startup_notify
     await on_startup_notify(dp)
     await set_default_commands(dp)
@@ -38,11 +37,11 @@ async def work():
             if miner.work_id_expenses is True:
                 miner.coal += 3 * miner.minerstype1 + 10 * miner.minerstype_coal
                 miner.tin += 2 * miner.minerstype1 + 3 * miner.minerstype2
-                miner.iron += 1 * miner.minerstype1 + 2 * miner.minerstype2 + 3 * miner.minerstype3
+                miner.iron += 1 * miner.minerstype1 + 2 * miner.minerstype2 + 3 * miner.minerstype3 + 10 * miner.minerstype_iron
                 miner.silver += 1 * miner.minerstype2 + 2 * miner.minerstype3
-                miner.aurum += 1 * miner.minerstype3 + 3 * miner.minerstype4
+                miner.aurum += 1 * miner.minerstype3 + 3 * miner.minerstype4 + 10 * miner.minerstype_aurum
                 miner.platinum += 2 * miner.minerstype4
-                miner.palladium += 1 * miner.minerstype4
+                miner.palladium += 1 * miner.minerstype4 + 10 * miner.minerstype_palladium
                 miner.save()
 
         await asyncio.sleep(delay=1)
@@ -143,5 +142,4 @@ if __name__ == '__main__':
     loop.create_task(pay())
     loop.create_task(change_courses())
     loop.create_task(check_work_id())
-
     executor.start_polling(dp, on_startup=on_startup)

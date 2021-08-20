@@ -30,13 +30,13 @@ def mining_message_await(miner):
     f'\n💰 Баланс:{miner.balance:.2f}$' \
     f'\n💸 Затраты: {(miner.expenses/60):.2f}$/мин' \
     f'\n---' \
-    f'\n⬛️ Уголь: {miner.coal} кг.\n' \
-    f'\n🟧 Олово: {miner.tin} кг.\n' \
-    f'\n⬜️ Железо: {miner.iron} кг.\n' \
-    f'\n⬜️ Серебро: {miner.silver} кг.\n' \
-    f'\n🟨 Золото: {miner.aurum} кг.\n' \
-    f'\n🟥 Платина: {miner.platinum} кг.\n' \
-    f'\n🟦 Палладий: {miner.palladium} кг.\n' \
+    f'\n⬛️ Уголь: {miner.coal} гр.\n' \
+    f'\n🟧 Олово: {miner.tin} гр.\n' \
+    f'\n⬜️ Железо: {miner.iron} гр.\n' \
+    f'\n⬜️ Серебро: {miner.silver} гр.\n' \
+    f'\n🟨 Золото: {miner.aurum} гр.\n' \
+    f'\n🟥 Платина: {miner.platinum} гр.\n' \
+    f'\n🟦 Палладий: {miner.palladium} гр.\n' \
     f'\n---' \
     f'\n🗻Шахты: {miner.mines1 + miner.mines2 + miner.mines3 + miner.mines4 + miner.mines_coal} шт.' \
     f'\n👷‍♂️Шахтёры: {miner.minerstype1 + miner.minerstype2 + miner.minerstype3 + miner.minerstype4 + miner.minerstype_coal} чел.' \
