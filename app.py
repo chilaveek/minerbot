@@ -102,8 +102,7 @@ async def change_courses():
             if miner.notify_courses is True:
                 await bot.send_message(text='Курс руд на бирже изменился! Проверьте', chat_id=gamer.minerid)
 
-        for course in Courses.select():
-            course = Courses.get(id=1)
+            course = Courses.get()
             course.coal += check_course(course.coal, 0.001)
             course.tin += check_course(course.tin, 0.005)
             course.iron += check_course(course.iron, 0.03)
