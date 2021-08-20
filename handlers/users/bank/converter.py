@@ -45,7 +45,7 @@ def percent_create(ore, default_course):
 def message_courses_await(course, money):
 
     text =  f'\n<b>🧾 Стоимость сырья</b>: {money:.2f}$\n' \
-    f'<b>\n📊 Курс на данный момент (за 100 шт.) - </b>\n' \
+    f'<b>\n📊 Курс на данный момент (за 100 гр.) - </b>\n' \
     f'\n[Курс] \ [Процент по отн. к дефолтному курсу]\n' \
     f'\n⬛️ Уголь - {course.coal * 100:.5f}$ \ {percent_create(course.coal, 0.001)}%\n' \
     f'\n🟧 Олово - {course.tin * 100:.5f}$ \ {percent_create(course.tin, 0.005)}%\n' \
@@ -87,7 +87,7 @@ async def converter(call: CallbackQuery):
     money = ore_price(miner.coal, course.coal) + ore_price(miner.tin, course.tin) + ore_price(miner.iron, course.iron) \
             + ore_price(miner.silver, course.silver) + ore_price(miner.aurum, course.aurum) \
             + ore_price(miner.platinum, course.platinum) + ore_price(miner.palladium, course.palladium)
-    await call.message.edit_text(text=f'Вас приветствует биржа руд и ценных бумаг.\nРабота в шахтах <b>приостановлена</b>.'
+    await call.message.edit_text(text=f'Вас приветствует биржа руд и ценных бумаг.'
                               f'\n🧾 Стоимость сырья на продажу: {money:.2f}$\n'
                               f'<b>\n📊 Из них - </b>\n'
                               f'\n⬛️ Уголь - {ore_price(miner.coal, course.coal):.2f}\n'
@@ -113,7 +113,7 @@ async def sell(call: CallbackQuery):
     miner.coal, miner.tin, miner.iron, miner.silver, miner.aurum, miner.platinum, miner.palladium = 0, 0, 0, 0, 0, 0, 0
     miner.work_id_converter = True
     miner.save()
-    await call.message.edit_text(text=f'📈Сделка прошла успешно! Вы продали всё, работа <b>возобновлена</b>.'
+    await call.message.edit_text(text=f'📈Сделка прошла успешно! Вы продали всё.'
                               f'\n💰Баланс сейчас: {miner.balance:.2f}$', reply_markup=bank_keyboard())
 
 
