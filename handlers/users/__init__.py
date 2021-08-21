@@ -10,6 +10,7 @@ from handlers.users.bank.deposit import dp
 from .bot_settings import dp
 from .message_for_all import dp
 from .viev_users import dp
+from .donate import dp
 from .echo import dp
 
 

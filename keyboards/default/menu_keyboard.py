@@ -11,7 +11,7 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text='😇 Создатель'),
         ],
         [
-            KeyboardButton(text='💳 Донат&Вывод'),
+            KeyboardButton(text='💳 С наилучшими пожеланиями...'),
             KeyboardButton(text='⚙️ Настройки')
         ],
     ],
